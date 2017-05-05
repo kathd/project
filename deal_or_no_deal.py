@@ -1,9 +1,74 @@
 # Deal or No Deal
 
-# Greet player with short intro about the game
-print "Welcome to Deal or No Deal"
-# show cash amounts
+import random
+
+# set values
 prizes = [.01, 1, 10, 100, 1000, 10000, 50000, 100000, 500000, 1000000]
+
+def choose_case():
+    """choose case to open in the end"""
+
+def how_to_play():
+    """prints the game instructions"""
+
+def eliminate_cases():
+    """eliminates and reveals cases each round"""
+
+def display_prizes():
+    """displays remaining prizes available"""
+
+
+def compute_banker_offer():
+    """computes average of remaining boxes"""
+
+def ask_deal_no_deal():
+    """asks player to take banker's offer and end game, or reject 
+    offer and continue"""
+
+def main_flow():
+    """main game"""
+    
+    instructions = raw_input("Are you familiar with the game (Y/N)? ")
+    instructions = instructions.lower()
+    if instructions == 'y':
+        # Asks whether player is ready
+        while True:
+            ready = raw_input("Are you ready to play (Y/N)? ")
+            ready = ready.lower()
+            if ready == 'y':
+                print "Let's Play!"
+                choose_case()
+            elif ready == 'n':
+                print "Okay, bye!"
+                #exit
+            else:
+                print "Y or N only please..."
+
+    
+    elif instructions == 'n':
+        how_to_play()
+    
+    else:
+        print "Y or N only please..."
+        main_flow()
+
+    # Asks whether player is ready
+    ready = raw_input("Are you ready to play (Y/N)? ")
+    ready = ready.lower()
+    if ready == 'y':
+        print "Let's Play!"
+        continue
+    elif ready == 'n':
+        print "You have no choice but to play"
+        continue
+    else:
+        print "Y or N only please..."
+
+    print "Choose your box"
+
+
+print "Welcome to Deal or No Deal." # short introduction before the game
+main_flow()
 
 # Ask to choose 1 out of 10 boxes with random cash amts
 # 10 boxes = .01, 1, 10, 100, 1000, 10000, 50000, 100000, 500000, 1000000
