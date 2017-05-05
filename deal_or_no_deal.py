@@ -5,8 +5,10 @@ import random
 # set values
 prizes = [.01, 1, 10, 100, 1000, 10000, 50000, 100000, 500000, 1000000]
 
-def choose_case():
-    """choose case to open in the end"""
+def draw_case():
+    """draw case"""
+    print "[1] [2] [3] [4] [5]"
+    print "\n[6] [7] [8] [9] [10]\n"
 
 def how_to_play():
     """prints the game instructions"""
@@ -16,7 +18,6 @@ def eliminate_cases():
 
 def display_prizes():
     """displays remaining prizes available"""
-
 
 def compute_banker_offer():
     """computes average of remaining boxes"""
@@ -28,43 +29,29 @@ def ask_deal_no_deal():
 def main_flow():
     """main game"""
     
-    instructions = raw_input("Are you familiar with the game (Y/N)? ")
-    instructions = instructions.lower()
-    if instructions == 'y':
-        # Asks whether player is ready
-        while True:
-            ready = raw_input("Are you ready to play (Y/N)? ")
-            ready = ready.lower()
-            if ready == 'y':
-                print "Let's Play!"
-                choose_case()
-            elif ready == 'n':
-                print "Okay, bye!"
-                #exit
-            else:
-                print "Y or N only please..."
-
-    
-    elif instructions == 'n':
-        how_to_play()
-    
-    else:
-        print "Y or N only please..."
-        main_flow()
-
-    # Asks whether player is ready
-    ready = raw_input("Are you ready to play (Y/N)? ")
-    ready = ready.lower()
-    if ready == 'y':
-        print "Let's Play!"
-        continue
-    elif ready == 'n':
-        print "You have no choice but to play"
-        continue
-    else:
-        print "Y or N only please..."
-
-    print "Choose your box"
+    while True:
+        instructions = raw_input("Are you familiar with the game (Y/N)? ")
+        instructions = instructions.lower()
+        if instructions == 'y':
+            print "Great! Let's Play!\n"
+            draw_case()
+            while True:
+                myCase = raw_input("Choose a case: \n")
+                myCase = int(myCase)
+                if myCase < 1 or myCase > 10:
+                    print "Choose from the available boxes only"
+                else: 
+                    sure = raw_input("Are you sure with your pick (Y/N)?")
+                    sure = sure.lower()
+                    if sure == 'y':
+                        print "Let's open some cases!"
+                        eliminate_cases()
+                    elif sure == 'n':
+        
+        elif instructions == 'n':
+            how_to_play()
+        else:
+            print "Y or N only please..."
 
 
 print "Welcome to Deal or No Deal." # short introduction before the game
