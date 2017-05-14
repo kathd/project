@@ -4,9 +4,8 @@
 
 
 import random
-# set values
 
-# set prize values randomize prizes
+# set randmoize prize values
 prizes = random.sample([.01, 5, 25, 75, 200, 400, 750, 1000, 10000, 50000, 100000, 300000, 500000, 1000000], 14)
 
 # set case values
@@ -15,7 +14,7 @@ cases = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 # where cases and prizes will be stored
 cases_dict = {}
 
-# used to access the indexes of prizes and cases lists
+# used to access and assign the indexes of prizes and cases to 'i'
 for i in range(len(cases)):
     prizes[i]
     cases[i]
@@ -24,14 +23,14 @@ for i in range(len(cases)):
 # where eliminated cases will be stored
 removed_cases = []
 
-# where player's case and prize will be stored
+# where player's initial choice will be stored
 selected_dict = {}
 
-# where the last remaining case will be stored
-swapped_dict = {}
+# where the selected winning case on the final round will be stored
+final_dict = {}
 
 def show_cases(cases, removed_cases):
-    """shows the cases still in play, and crosses out the selected and
+    """displays cases still in play, and crosses out the selected and
     eliminated cases"""
 
     for case in cases:
@@ -43,11 +42,11 @@ def show_cases(cases, removed_cases):
     print "\n"
 
 def show_prizes(cases_dict):
-    """shows available prizes"""
+    """displays available prizes in ascending order"""
 
-    print "\nAmounts still in play:\n " #+ str(cases_dict.values())
+    print "\nAmounts still in play:\n "
     available_prizes = cases_dict.values()
-    for prize in sorted(prizes): # sorts the prizes from lowest to highest
+    for prize in sorted(prizes):
         if prize in available_prizes:
             print prize
 
@@ -55,7 +54,7 @@ def show_prizes(cases_dict):
 
 
 def how_to_play():
-    """prints the game instructions if player wants to know how the game is played"""
+    """asks player if familiar with the game and if not, prints game directions"""
 
     while True:
         instructions = raw_input("Are you familiar with the game (Y/N)? ")
@@ -110,7 +109,7 @@ def compute_banker_offer(cases_dict):
     """computes average of remaining boxes"""
 
     banker_offer = sum(cases_dict.values()) / len(cases_dict.values())
-    banker_offer = round(banker_offer, 2)
+    banker_offer = round(banker_offer, 2) # rounds off to two decimal places
     print "\nThe Banker wants to buy your case for $ " + str(banker_offer) + "."
     return banker_offer
 
@@ -144,8 +143,10 @@ def open_player_case(selected_dict, player_case, banker_offer):
 
     exit()
 
-def swap_case(cases_dict, player_case, selected_dict, swapped_dict):
-    """asks player whether he/she wants to swap the case with the remaining case"""
+def swap_case(cases_dict, player_case, selected_dict, final_dict):
+    """gives player the option to swap the initially chosen case with the remaining case"""
+
+    print "\nIf you want to swap cases, this is your chance.\n"
 
     # where remaining items to be swapped will be stored
     swap_dict = {}
@@ -154,10 +155,11 @@ def swap_case(cases_dict, player_case, selected_dict, swapped_dict):
         k
         v
         swap_dict[k] = v
-
-    print "\nIf you want to swap cases, this is your chance.\n"
-    print swap_dict.keys()
+    
     print "\nYOUR ORIGINAL CASE: " + str(player_case)
+    print swap_dict.keys()
+    print "\n"
+
     while True:
         swap = raw_input("\nCHOOSE YOUR WINNING CASE: ")
         if swap.isdigit(): # ensures that the input is a number
@@ -168,11 +170,14 @@ def swap_case(cases_dict, player_case, selected_dict, swapped_dict):
         
         if swap in swap_dict:
             if swap in selected_dict:
+                final_dict[swap] = cases_dict[swap]
+                del cases_dict[swap]
                 print "\nYou chose your original case.\n"
                 return swap
 
             else:
-                swapped_dict[swap] = swap_dict[swap]
+                final_dict[swap] = cases_dict[swap]
+                del cases_dict[swap]
                 print "\nYou went for the other case.\n"
                 return swap
         
@@ -180,26 +185,30 @@ def swap_case(cases_dict, player_case, selected_dict, swapped_dict):
             print "\nChoose between " + swap_dict.keys() + " only.\n"
 
 
-def final_round(cases_dict, selected_dict, swapped_dict, swap):
+def final_round(cases_dict, selected_dict, final_dict, swap):
     """prints the prize won by player if player reaches the final round"""
 
     print "YOU WON...\n\n"
-    print "$ " + str(cases_dict[swap]) + "\n\n"
-    print "CONGRATULATIONS!"
-    # if swap in selected_dict:
-    #     if selected_dict[swap] < 
-    #     print "\nYOU GOT THE LOWER PRIZE, BUT NOT BAD.\n\n"
-    # else:
-    #     print "\nCONGRATULATIONS! YOU GOT THE HIGHER PRIZE!\n\n"
+    print "$ " + str(final_dict[swap]) + "\n\n"
+    
+    for i in cases_dict:
+        i
+        if final_dict[swap] < cases_dict[i]:
+            print "\nYOU GOT THE LOWER PRIZE, BUT NOT BAD.\n\n"
+        else:
+            print "\nCONGRATULATIONS! YOU GOT THE HIGHER PRIZE!\n\n"
 
     exit()
 
 
 def main_flow():
     """main game"""
+
     print "\nWelcome to Deal or No Deal!\n"
+
     how_to_play()
     show_prizes(cases_dict)
+
     while True:
         show_cases(cases, removed_cases)
         player_case = raw_input("\nChoose YOUR WINNING CASE: ")
@@ -218,8 +227,6 @@ def main_flow():
                 sure = sure.lower()
             
                 if sure == 'y':
-##                  del cases_dict[player_case] --> # DO NOT DELETE PLAYER_CASE FROM DICT
-##                  selected_case.append(player_case) # adds player case to selected_case
                     selected_dict[player_case] = cases_dict[player_case] # adds player's case to selected_dict
                     removed_cases.append(player_case) # adds player case to removed_cases
                     print "\nGreat! Let's try your luck and eliminate some cases!\n"
@@ -267,8 +274,8 @@ def main_flow():
                     # FINAL ROUND
                     print "You only have one case left.\n\n"
                     show_cases(cases, removed_cases)
-                    swap = swap_case(cases_dict, player_case, selected_dict, swapped_dict)
-                    final_round(cases_dict, selected_dict, swapped_dict, swap)
+                    swap = swap_case(cases_dict, player_case, selected_dict, final_dict)
+                    final_round(cases_dict, selected_dict, final_dict, swap)
                     # banker_offer = compute_banker_offer(cases_dict)
                     # show_prizes(cases_dict)
                     # ask_deal_no_deal(banker_offer)
