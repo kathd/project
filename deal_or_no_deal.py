@@ -2,10 +2,10 @@
 # Hackbright Prep Project, May 2017
 # by Kathleen Domingo
 
+import os # needed for function to clear screen
+import random # needed for function to randomize prize values
 
-import random
-
-# set randmoize prize values
+# set randomized prize values
 prizes = random.sample([.01, 5, 25, 75, 200, 400, 750, 1000, 10000, 50000, 100000, 300000, 500000, 1000000], 14)
 
 # set case values
@@ -20,13 +20,13 @@ for i in range(len(cases)):
     cases[i]
     cases_dict[cases[i]] = prizes[i] # adds keys and values to cases_dict
 
-# where eliminated cases will be stored
+# list where eliminated cases will be stored
 removed_cases = []
 
-# where player's initial choice will be stored
+# dictionary where player's initial choice will be stored
 selected_dict = {}
 
-# where the selected winning case on the final round will be stored
+# dictionary where the selected winning case on the final round will be stored
 final_dict = {}
 
 def show_cases(cases, removed_cases):
@@ -46,9 +46,8 @@ def show_prizes(cases_dict):
 
     print "\nAmounts still in play:\n "
     available_prizes = cases_dict.values()
-    for prize in sorted(prizes):
-        if prize in available_prizes:
-            print prize
+    for prize in sorted(available_prizes):
+        print prize
 
     print "\n"
 
@@ -61,7 +60,9 @@ def how_to_play():
         instructions = instructions.lower()
         
         if instructions == 'y':
-            print "\nGreat! Let's Play!\n\n"
+            print "\nCool! Let's Play!\n\n"
+            enter = raw_input("\nPress ENTER to continue.")
+            clear_screen = os.system("clear") # clears the screen
             break
         
         elif instructions == 'n':
@@ -71,6 +72,8 @@ def how_to_play():
             print "Then the Banker offers to buy the player's case at the end of each round.\n\n"
             print "The player can accept the offer and end the game by saying 'DEAL' or reject it and continue the game by saying 'NO DEAL'.\n\n"            
             print "Now let's play!\n"
+            enter = raw_input("\nPress ENTER to continue.")
+            clear_screen = os.system("clear") # clears the screen
             break
         
         else:
@@ -87,23 +90,22 @@ def eliminate_cases(turn, player_case, removed_cases, cases_dict):
             case_to_remove = int(case_to_remove)
         else:
             "\nChoose from the available boxes only\n"
-            continue
+            continue # skips the conditions below and loops over from the start
         
         if case_to_remove == player_case:
             print "\nThis is the case you have selected\n"
-            continue
         elif case_to_remove < 1 or case_to_remove > len(cases):
-            print "\nChoose from the available boxes only\n"
-            continue        
+            print "\nChoose from the available boxes only\n"    
         elif case_to_remove in removed_cases:
-            print "\nThis case has been removed.\n"
-            continue        
+            print "\nThis case has been removed.\n"     
         else:
             print "\n$ " + str(cases_dict[case_to_remove]) + " is out.\n"
             del cases_dict[case_to_remove] # deletes the value from the dictionary
             removed_cases.append(case_to_remove) # adds the removed case to a list
             turn = turn - 1
             show_cases(cases, removed_cases) # shows cases still in play at then end
+    enter = raw_input("\nPress ENTER to continue.")
+    clear_screen = os.system("clear") # clears the screen
 
 def compute_banker_offer(cases_dict):
     """computes average of remaining boxes"""
@@ -122,20 +124,22 @@ def ask_deal_no_deal(banker_offer, player_case):
         decision = raw_input("\nDEAL OR NO DEAL \n\n> ")
         decision = decision.upper()
         if decision == "DEAL":
-            print "YOU WON $ " + str(banker_offer) + "."
+            print "\nYOU WON $ " + str(banker_offer) + "."
+            enter = raw_input("\nPress ENTER to continue.")
             open_player_case(selected_dict, player_case, banker_offer)
         elif decision == "NO DEAL":
             print "\nLet's proceed to the next round!\n"
+            enter = raw_input("\nPress ENTER to continue.")
+            clear_screen = os.system("clear") # clears the screen
             break
         else:
             "\nDEAL or NO DEAL only please."
-            continue
 
 def open_player_case(selected_dict, player_case, banker_offer):
     """opens player's case when player chooses DEAL"""
 
-    print "\nTHE PRIZE IN YOUR CASE IS "
-    print "$ " + str(selected_dict[player_case]) # prints the item in selected_case list
+    clear_screen = os.system("clear") # clears the screen
+    print "\nTHE PRIZE IN YOUR CASE IS $ " + str(selected_dict[player_case]) # prints the item in selected_case list
     if banker_offer < selected_dict.values():
         print "\nYOU GOT THE LOWER PRIZE, BUT NOT BAD.\n\n"
     elif banker_offer > selected_dict.values():
@@ -156,7 +160,7 @@ def swap_case(cases_dict, player_case, selected_dict, final_dict):
         v
         swap_dict[k] = v
     
-    print "\nYOUR ORIGINAL CASE: " + str(player_case)
+    print "\nYOUR ORIGINAL CASE: " + str(player_case) + "\n\n"
     print swap_dict.keys()
     print "\n"
 
@@ -173,12 +177,16 @@ def swap_case(cases_dict, player_case, selected_dict, final_dict):
                 final_dict[swap] = cases_dict[swap]
                 del cases_dict[swap]
                 print "\nYou chose your original case.\n"
+                enter = raw_input("\nPress ENTER to continue.")
+                clear_screen = os.system("clear") # clears the screen
                 return swap
 
             else:
                 final_dict[swap] = cases_dict[swap]
                 del cases_dict[swap]
                 print "\nYou went for the other case.\n"
+                enter = raw_input("\nPress ENTER to continue.")
+                clear_screen = os.system("clear") # clears the screen
                 return swap
         
         else:
@@ -189,7 +197,9 @@ def final_round(cases_dict, selected_dict, final_dict, swap):
     """prints the prize won by player if player reaches the final round"""
 
     print "YOU WON...\n\n"
-    print "$ " + str(final_dict[swap]) + "\n\n"
+    enter = raw_input("\n...\n")
+    enter = raw_input("\n...\n")
+    print "\n$ " + str(final_dict[swap]) + "\n\n"
     
     for i in cases_dict:
         i
@@ -229,7 +239,10 @@ def main_flow():
                 if sure == 'y':
                     selected_dict[player_case] = cases_dict[player_case] # adds player's case to selected_dict
                     removed_cases.append(player_case) # adds player case to removed_cases
+                    clear_screen = os.system("clear") # clears the screen
                     print "\nGreat! Let's try your luck and eliminate some cases!\n"
+                    enter = raw_input("\nPress ENTER to continue.")
+                    clear_screen = os.system("clear") #clears the screen
 
                     # ROUND 1
                     print "Let's open 4 cases!\n\n"
