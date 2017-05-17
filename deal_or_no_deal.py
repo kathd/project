@@ -1,4 +1,5 @@
 # Deal or No Deal (Modified)
+# Python 2.7.13
 # Hackbright Prep Project, May 2017
 # by Kathleen Domingo
 
@@ -47,7 +48,7 @@ def show_prizes(cases_dict):
     print "\nAmounts still in play:\n "
     available_prizes = cases_dict.values()
     for prize in sorted(available_prizes):
-        print prize
+        print "$ " + str(prize)
 
     print "\n"
 
@@ -60,7 +61,7 @@ def how_to_play():
         instructions = instructions.lower()
         
         if instructions == 'y':
-            print "\nCool! Let's Play!\n\n"
+            print "\nCool! Let's Play!\n"
             enter = raw_input("\nPress ENTER to continue.")
             clear_screen = os.system("clear") # clears the screen
             break
@@ -104,7 +105,7 @@ def eliminate_cases(turn, player_case, removed_cases, cases_dict):
             removed_cases.append(case_to_remove) # adds the removed case to a list
             turn = turn - 1
             show_cases(cases, removed_cases) # shows cases still in play at then end
-    enter = raw_input("\nPress ENTER to continue.")
+    enter = raw_input("\nThe Banker just called and wants to give you an offer... Press ENTER.")
     clear_screen = os.system("clear") # clears the screen
 
 def compute_banker_offer(cases_dict):
@@ -125,7 +126,7 @@ def ask_deal_no_deal(banker_offer, player_case):
         decision = decision.upper()
         if decision == "DEAL":
             print "\nYOU WON $ " + str(banker_offer) + "."
-            enter = raw_input("\nPress ENTER to continue.")
+            enter = raw_input("\n")
             open_player_case(selected_dict, player_case, banker_offer)
         elif decision == "NO DEAL":
             print "\nLet's proceed to the next round!\n"
@@ -138,12 +139,12 @@ def ask_deal_no_deal(banker_offer, player_case):
 def open_player_case(selected_dict, player_case, banker_offer):
     """opens player's case when player chooses DEAL"""
 
-    clear_screen = os.system("clear") # clears the screen
+    #clear_screen = os.system("clear") # clears the screen
     print "\nTHE PRIZE IN YOUR CASE IS $ " + str(selected_dict[player_case]) # prints the item in selected_case list
-    if banker_offer < selected_dict.values():
-        print "\nYOU GOT THE LOWER PRIZE, BUT NOT BAD.\n\n"
-    elif banker_offer > selected_dict.values():
-        print "\nCONGRATULATIONS! YOU GOT THE HIGHER PRIZE!\n\n"
+    if banker_offer < selected_dict[player_case]:
+        print "\n\nYOU GOT THE LOWER PRIZE, BUT NOT BAD.\n\n"
+    elif banker_offer > selected_dict[player_case]:
+        print "\n\nCONGRATULATIONS! YOU GOT THE HIGHER PRIZE!\n\n"
 
     exit()
 
@@ -212,7 +213,7 @@ def final_round(cases_dict, selected_dict, final_dict, swap):
 
 
 def main_flow():
-    """main game"""
+    """where the main flow of the gain is stored"""
 
     print "\nWelcome to Deal or No Deal!\n"
 
@@ -301,4 +302,4 @@ def main_flow():
                     print "\nY or N only please.\n"
                   
 
-main_flow()
+main_flow() # calls the main function
