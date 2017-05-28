@@ -260,7 +260,7 @@ def main_flow():
                     print "Let's open 3 cases!\n\n"
                     show_cases(cases, removed_cases)
                     eliminate_cases(3, player_case, removed_cases, cases_dict)
-                    compute_banker_offer(cases_dict)
+                    banker_offer = compute_banker_offer(cases_dict) # to use as reference for ask_deal_no_deal()
                     show_prizes(cases_dict)
                     ask_deal_no_deal(banker_offer, player_case)
 
@@ -268,7 +268,7 @@ def main_flow():
                     print "Let's open 2 cases!\n\n"
                     show_cases(cases, removed_cases)
                     eliminate_cases(2, player_case, removed_cases, cases_dict)
-                    compute_banker_offer(cases_dict)
+                    banker_offer = compute_banker_offer(cases_dict) # to use as reference for ask_deal_no_deal()
                     show_prizes(cases_dict)
                     ask_deal_no_deal(banker_offer, player_case)
 
@@ -276,7 +276,7 @@ def main_flow():
                     print "Let's open 2 cases!\n\n"
                     show_cases(cases, removed_cases)
                     eliminate_cases(2, player_case, removed_cases, cases_dict)
-                    compute_banker_offer(cases_dict)
+                    banker_offer = compute_banker_offer(cases_dict) # to use as reference for ask_deal_no_deal()
                     show_prizes(cases_dict)
                     ask_deal_no_deal(banker_offer, player_case)
 
@@ -284,7 +284,7 @@ def main_flow():
                     print "Let's open 1 case!\n\n"
                     show_cases(cases, removed_cases)
                     eliminate_cases(1, player_case, removed_cases, cases_dict)
-                    compute_banker_offer(cases_dict)
+                    banker_offer = compute_banker_offer(cases_dict) # to use as reference for ask_deal_no_deal()
                     show_prizes(cases_dict)
                     ask_deal_no_deal(banker_offer, player_case)
 
